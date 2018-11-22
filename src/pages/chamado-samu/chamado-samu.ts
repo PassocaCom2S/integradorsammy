@@ -30,7 +30,7 @@ export class ChamadoSamuPage {
     let toast = this.toastCtrl.create({
       message: 'Requisição enviada com sucesso! Favor aguarde no lugar até a chegada de socorro.',
       duration: 4000,
-      position: 'middle'
+      position: 'bottom'
     });
 
     this.navCtrl.push(AttendancePage);

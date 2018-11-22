@@ -1,9 +1,4 @@
-<!--
-  Generated template for the ChamadoSamuPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -15,23 +10,15 @@
 
 <ion-content padding id="padding">
 
-  <!-- <ion-list>
-    <ion-item *ngFor="let user of users">
-      <h2>{{user.name}}</h2>
-      <p>{{user.gender}}</p>
-    </ion-item>
-  </ion-list> -->
 
-  <!-- <p>Latitude: {{latitude}}</p>
-  <p>Longitude: {{longitude}}</p> -->
   <h2 >Local da Ocorrência</h2>
   <div #map id="map"></div>
 
-  <form [formGroup]="chamado" (ngSubmit)="dadosChamado()">
+  <form >
   <div class="form">
     <ion-item  class="item">
       <ion-label>Você é a vitima?</ion-label>
-      <ion-toggle color="danger" formControlName="vitima"></ion-toggle>
+      <ion-toggle color="danger"></ion-toggle>
     </ion-item>
 
 

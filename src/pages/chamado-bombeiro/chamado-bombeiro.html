@@ -15,24 +15,14 @@
 
 <ion-content padding id="padding">
 
-  <!-- <ion-list>
-    <ion-item *ngFor="let user of users">
-      <h2>{{user.name}}</h2>
-      <p>{{user.gender}}</p>
-    </ion-item>
-  </ion-list> -->
-
-  <!-- <p>Latitude: {{latitude}}</p>
-  <p>Longitude: {{longitude}}</p> -->
   <h2 >Local da Ocorrência</h2>
   <div #map id="map"></div>
 
 
-    <form [formGroup]="chamado" (ngSubmit)="dadosChamado()">
     <div class="form">
       <ion-item  class="item">
         <ion-label>Você é a vitima?</ion-label>
-        <ion-toggle color="danger" formControlName="vitima"></ion-toggle>
+        <ion-toggle color="danger"></ion-toggle>
       </ion-item>
 
 
@@ -40,6 +30,5 @@
 
       <button ion-button round block color="secondary" type="submit" (click)="concluirChamado()" class="space">Solicitar serviço - Bombeiro</button>
 
-    </form>
 
   </ion-content>
