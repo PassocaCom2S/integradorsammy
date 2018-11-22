@@ -1,20 +1,12 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
-import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, CameraPosition, MarkerOptions, Marker, Environment } from '@ionic-native/google-maps';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { GoogleMaps, GoogleMap, GoogleMapOptions, Marker } from '@ionic-native/google-maps';
 import { ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { UserProvider } from '../../providers/user/user';
 import { AttendancePage } from '../attendance/attendance';
-
-/**
- * Generated class for the ChamadoBombeiroPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -35,21 +27,14 @@ export class ChamadoBombeiroPage {
   longitude: any;
   map: GoogleMap;
 
-  //Grupo para inputs presentes na pagina.
-  private chamado: FormGroup;
-
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private geolocation: Geolocation,
-    private formBuilder: FormBuilder,
     private toastCtrl: ToastController,
     private camera: Camera,
     public userProvider: UserProvider) {
 
-    this.chamado = this.formBuilder.group({
-      vitima: ['', Validators.required]
-    });
 
     this.getUser();
   }

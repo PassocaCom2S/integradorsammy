@@ -25674,6 +25674,36 @@ ion-navbar.toolbar {
   min-height: calc(46px + env(safe-area-inset-bottom));
 }
 
+page-attendance #padding {
+  text-align: center;
+}
+
+page-attendance #map {
+  border-bottom: 2px solid black;
+  border-top: 2px solid black;
+  border-radius: 10px;
+  width: 100%;
+  height: 30%;
+}
+
+page-attendance .form {
+  border: 1px solid black;
+  border-radius: 20px;
+  margin-top: 10%;
+}
+
+page-attendance .item {
+  border-radius: 20px;
+}
+
+page-attendance .space {
+  margin-top: 10%;
+}
+
+page-attendance .text-cam1 {
+  margin-bottom: 05%;
+}
+
 page-chamado-bombeiro #padding {
   text-align: center;
 }

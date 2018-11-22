@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ChamadoBombeiroPage } from '../chamado-bombeiro/chamado-bombeiro';
 import { Geolocation } from '@ionic-native/geolocation';
-import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, CameraPosition, MarkerOptions, Marker, Environment } from '@ionic-native/google-maps';
+import { GoogleMaps, GoogleMap, GoogleMapOptions, Marker } from '@ionic-native/google-maps';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { ToastController } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
@@ -40,18 +39,8 @@ export class ChamadoPoliciaPage {
   }
 
   concluirChamado() {
-    let toast = this.toastCtrl.create({
-      message: 'Requisição enviada com sucesso! Favor aguarde no lugar até a chegada de socorro.',
-      duration: 5000,
-      position: 'middle'
-    });
 
     this.navCtrl.push(AttendancePage);
-    toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
-    });
-
-    toast.present();
   }
 
   dadosChamado() {

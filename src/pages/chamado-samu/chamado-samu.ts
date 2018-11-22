@@ -1,18 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
-import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, CameraPosition, MarkerOptions, Marker, Environment } from '@ionic-native/google-maps';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { GoogleMaps, GoogleMap, GoogleMapOptions, Marker} from '@ionic-native/google-maps';
 import { ToastController } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
 import { AttendancePage } from '../attendance/attendance';
-
-/**
- * Generated class for the ChamadoSamuPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -24,18 +16,14 @@ export class ChamadoSamuPage {
   latitude: any;
   longitude: any;
   map: GoogleMap;
-  private chamado: FormGroup;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public userProvider: UserProvider,
     private geolocation: Geolocation,
-    private formBuilder: FormBuilder,
     private toastCtrl: ToastController) {
-    this.chamado = this.formBuilder.group({
-      vitima: ['', Validators.required]
-    });
+
   }
 
   concluirChamado() {

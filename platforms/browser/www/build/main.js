@@ -1,17 +1,17 @@
-webpackJsonp([7],{
+webpackJsonp([8],{
 
-/***/ 105:
+/***/ 107:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChamadoBombeiroPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChamadoPoliciaPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_google_maps__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__ = __webpack_require__(167);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_user_user__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_google_maps__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_user_user__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__attendance_attendance__ = __webpack_require__(45);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -21,6 +21,145 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
+
+
+
+
+
+
+
+var ChamadoPoliciaPage = /** @class */ (function () {
+    function ChamadoPoliciaPage(navCtrl, navParams, userProvider, geolocation, formBuilder, toastCtrl) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.userProvider = userProvider;
+        this.geolocation = geolocation;
+        this.formBuilder = formBuilder;
+        this.toastCtrl = toastCtrl;
+        this.chamado = new __WEBPACK_IMPORTED_MODULE_4__angular_forms__["c" /* FormGroup */]({
+            'vitima': new __WEBPACK_IMPORTED_MODULE_4__angular_forms__["b" /* FormControl */](true, [__WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].required]),
+        });
+        this.chamado = this.formBuilder.group({
+            vitima: ['', __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].required]
+        });
+    }
+    ChamadoPoliciaPage.prototype.concluirChamado = function () {
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_6__attendance_attendance__["a" /* AttendancePage */]);
+    };
+    ChamadoPoliciaPage.prototype.dadosChamado = function () {
+        var _this = this;
+        var data = new Date().toISOString();
+        var tempo = data.split('T');
+        var dia = tempo[0];
+        var hora = tempo[1];
+        var call = {
+            'call': {
+                'user': '1',
+                'date': dia,
+                'time': hora,
+                'status': 'Em andamento',
+                'latitude': this.latitude,
+                'longitude': this.longitude
+            }
+        };
+        this.userProvider.addCall(call).then(function (result) {
+            _this.toastCtrl
+                .create({ message: 'Chamado criado com sucesso!', duration: 5000 }).present();
+        }).catch(function (error) {
+            _this.toastCtrl
+                .create({ message: 'Falha ao criar chamada: ' + error.error, duration: 5000 }).present();
+            console.log(error);
+        });
+    };
+    ChamadoPoliciaPage.prototype.loadMap = function () {
+        var mapOptions = {
+            camera: {
+                target: {
+                    lat: this.latitude,
+                    lng: this.longitude
+                },
+                zoom: 18,
+                tilt: 30
+            }
+        };
+        this.map = __WEBPACK_IMPORTED_MODULE_3__ionic_native_google_maps__["a" /* GoogleMaps */].create('map', mapOptions);
+        var marker = this.map.addMarkerSync({
+            title: 'Me',
+            icon: 'blue',
+            animation: 'DROP',
+            position: {
+                lat: this.latitude,
+                lng: this.longitude
+            }
+        });
+        this.latitude = mapOptions.camera.target.lat;
+        this.longitude = mapOptions.camera.target.lon;
+        marker.showInfoWindow();
+    };
+    ChamadoPoliciaPage.prototype.ionViewDidLoad = function () {
+        var _this = this;
+        this.geolocation.getCurrentPosition()
+            .then(function (resp) {
+            _this.resp_coords = resp.coords;
+            console.log(_this.resp_coords);
+            _this.latitude = _this.resp_coords.latitude;
+            _this.longitude = _this.resp_coords.longitude;
+            _this.loadMap();
+            var watch = _this.geolocation.watchPosition();
+            watch.subscribe(function (resp) {
+                _this.resp_coords = resp.coords;
+                _this.latitude = _this.resp_coords.latitude;
+                _this.longitude = _this.resp_coords.longitude;
+                _this.loadMap();
+            }, function (error) {
+                console.log(error);
+            });
+        }).catch(function (error) {
+            console.log('Erro ao recuperar sua posição', error);
+        });
+    };
+    ChamadoPoliciaPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-chamado-policia',template:/*ion-inline-start:"/home/carloswosiak/Desktop/int/app/save-us/src/pages/chamado-policia/chamado-policia.html"*/'<ion-header>\n\n  <ion-navbar>\n    <ion-title>Detalhes da Ocorrência</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding id="padding">\n  <h2>Local da Ocorrência</h2>\n\n    <div #map id="map"></div>\n\n\n\n  <form [formGroup]="chamado" (ngSubmit)="dadosChamado()">\n  <div class="form">\n    <ion-item  class="item">\n      <ion-label>Você é a vitima?</ion-label>\n      <ion-toggle color="danger" formControlName="vitima" ></ion-toggle>\n    </ion-item>\n\n\n  </div>\n    \n\n    <button ion-button round block color="secondary" type="submit" (click)="concluirChamado()" class="space">Solicitar serviço - Polícia</button>\n\n  </form>\n\n</ion-content>\n'/*ion-inline-end:"/home/carloswosiak/Desktop/int/app/save-us/src/pages/chamado-policia/chamado-policia.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_5__providers_user_user__["a" /* UserProvider */],
+            __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__["a" /* Geolocation */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormBuilder */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* ToastController */]])
+    ], ChamadoPoliciaPage);
+    return ChamadoPoliciaPage;
+}());
+
+//# sourceMappingURL=chamado-policia.js.map
+
+/***/ }),
+
+/***/ 108:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChamadoBombeiroPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_google_maps__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_user_user__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__attendance_attendance__ = __webpack_require__(45);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
 
 
 
@@ -90,13 +229,36 @@ var ChamadoBombeiroPage = /** @class */ (function () {
             duration: 4000,
             position: 'middle'
         });
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_7__attendance_attendance__["a" /* AttendancePage */]);
         toast.onDidDismiss(function () {
             console.log('Dismissed toast');
         });
         toast.present();
     };
     ChamadoBombeiroPage.prototype.dadosChamado = function () {
-        console.log(this.chamado.value);
+        var _this = this;
+        var data = new Date().toISOString();
+        var tempo = data.split('T');
+        var dia = tempo[0];
+        var hora = tempo[1];
+        var call = {
+            'call': {
+                'user': '1',
+                'date': dia,
+                'time': hora,
+                'status': 'Em andamento',
+                'latitude': this.latitude,
+                'longitude': this.longitude
+            }
+        };
+        this.userProvider.addCall(call).then(function (result) {
+            _this.toastCtrl
+                .create({ message: 'Chamado criado com sucesso!', duration: 5000 }).present();
+        }).catch(function (error) {
+            _this.toastCtrl
+                .create({ message: 'Falha ao criar chamada: ' + error.error, duration: 5000 }).present();
+            console.log(error);
+        });
     };
     //Metodo para carregar o "Mini mapa" com base nas coordenadas.
     ChamadoBombeiroPage.prototype.loadMap = function () {
@@ -146,7 +308,7 @@ var ChamadoBombeiroPage = /** @class */ (function () {
     };
     ChamadoBombeiroPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-chamado-bombeiro',template:/*ion-inline-start:"/home/carloswosiak/Desktop/int/app/save-us/src/pages/chamado-bombeiro/chamado-bombeiro.html"*/'<!--\n  Generated template for the ChamadoBombeiroPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Detalhes da Ocorrência</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding id="padding">\n\n  <!-- <ion-list>\n    <ion-item *ngFor="let user of users">\n      <h2>{{user.name}}</h2>\n      <p>{{user.gender}}</p>\n    </ion-item>\n  </ion-list> -->\n\n  <!-- <p>Latitude: {{latitude}}</p>\n  <p>Longitude: {{longitude}}</p> -->\n  <h2 >Local da Ocorrência</h2>\n  <div #map id="map"></div>\n\n\n    <form [formGroup]="chamado" (ngSubmit)="dadosChamado()">\n    <div class="form">\n      <ion-item  class="item">\n        <ion-label>Você é a vitima?</ion-label>\n        <ion-toggle color="danger" formControlName="vitima"></ion-toggle>\n      </ion-item>\n\n\n    </div>\n    \n\n      <button ion-button round block color="secondary" type="submit" (click)="concluirChamado()" class="space">Solicitar serviço - Bombeiro</button>\n\n    </form>\n\n  </ion-content>\n'/*ion-inline-end:"/home/carloswosiak/Desktop/int/app/save-us/src/pages/chamado-bombeiro/chamado-bombeiro.html"*/,
+            selector: 'page-chamado-bombeiro',template:/*ion-inline-start:"/home/carloswosiak/Desktop/int/app/save-us/src/pages/chamado-bombeiro/chamado-bombeiro.html"*/'<!--\n  Generated template for the ChamadoBombeiroPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Detalhes da Ocorrência</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding id="padding">\n\n  <!-- <ion-list>\n    <ion-item *ngFor="let user of users">\n      <h2>{{user.name}}</h2>\n      <p>{{user.gender}}</p>\n    </ion-item>\n  </ion-list> -->\n\n  <!-- <p>Latitude: {{latitude}}</p>\n  <p>Longitude: {{longitude}}</p> -->\n  <h2 >Local da Ocorrência</h2>\n  <div #map id="map"></div>\n\n\n    <form [formGroup]="chamado" (ngSubmit)="dadosChamado()">\n    <div class="form">\n      <ion-item  class="item">\n        <ion-label>Você é a vitima?</ion-label>\n        <ion-toggle color="danger" formControlName="vitima"></ion-toggle>\n      </ion-item>\n\n\n    </div>\n\n      <button ion-button round block color="secondary" type="submit" (click)="concluirChamado()" class="space">Solicitar serviço - Bombeiro</button>\n\n    </form>\n\n  </ion-content>\n'/*ion-inline-end:"/home/carloswosiak/Desktop/int/app/save-us/src/pages/chamado-bombeiro/chamado-bombeiro.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */],
@@ -163,169 +325,18 @@ var ChamadoBombeiroPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 106:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChamadoPoliciaPage; });
-/* unused harmony export Call */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_google_maps__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_user_user__ = __webpack_require__(49);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-var ChamadoPoliciaPage = /** @class */ (function () {
-    function ChamadoPoliciaPage(navCtrl, navParams, userProvider, geolocation, formBuilder, toastCtrl) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.userProvider = userProvider;
-        this.geolocation = geolocation;
-        this.formBuilder = formBuilder;
-        this.toastCtrl = toastCtrl;
-        this.chamado = new __WEBPACK_IMPORTED_MODULE_4__angular_forms__["c" /* FormGroup */]({
-            'vitima': new __WEBPACK_IMPORTED_MODULE_4__angular_forms__["b" /* FormControl */](true, [__WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].required]),
-        });
-        this.chamado = this.formBuilder.group({
-            vitima: ['', __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].required]
-        });
-    }
-    ChamadoPoliciaPage.prototype.concluirChamado = function () {
-        var toast = this.toastCtrl.create({
-            message: 'Requisição enviada com sucesso! Favor aguarde no lugar até a chegada de socorro.',
-            duration: 5000,
-            position: 'middle'
-        });
-        toast.onDidDismiss(function () {
-            console.log('Dismissed toast');
-        });
-        toast.present();
-    };
-    ChamadoPoliciaPage.prototype.dadosChamado = function () {
-        var _this = this;
-        var lonlat = this.latitude + " " + this.longitude;
-        var data = new Date().toISOString();
-        var tempo = data.split('T');
-        var dia = tempo[0];
-        var hora = tempo[1];
-        var call = {
-            'call': {
-                'date': dia,
-                'time': hora,
-                'local': lonlat,
-                'user': '1'
-            }
-        };
-        this.userProvider.addCall(call).then(function (result) {
-            _this.toastCtrl
-                .create({ message: 'Chamado criado com sucesso!', duration: 5000 }).present();
-        }).catch(function (error) {
-            _this.toastCtrl
-                .create({ message: 'Falha ao criar chamada: ' + error.error, duration: 5000 }).present();
-            console.log(error);
-        });
-    };
-    ChamadoPoliciaPage.prototype.loadMap = function () {
-        var mapOptions = {
-            camera: {
-                target: {
-                    lat: this.latitude,
-                    lng: this.longitude
-                },
-                zoom: 18,
-                tilt: 30
-            }
-        };
-        this.map = __WEBPACK_IMPORTED_MODULE_3__ionic_native_google_maps__["a" /* GoogleMaps */].create('map', mapOptions);
-        var marker = this.map.addMarkerSync({
-            title: 'Me',
-            icon: 'blue',
-            animation: 'DROP',
-            position: {
-                lat: this.latitude,
-                lng: this.longitude
-            }
-        });
-        this.latitude = mapOptions.camera.target.lat;
-        this.longitude = mapOptions.camera.target.lon;
-        marker.showInfoWindow();
-    };
-    ChamadoPoliciaPage.prototype.ionViewDidLoad = function () {
-        var _this = this;
-        this.geolocation.getCurrentPosition()
-            .then(function (resp) {
-            _this.resp_coords = resp.coords;
-            console.log(_this.resp_coords);
-            _this.latitude = _this.resp_coords.latitude;
-            _this.longitude = _this.resp_coords.longitude;
-            _this.loadMap();
-            var watch = _this.geolocation.watchPosition();
-            watch.subscribe(function (resp) {
-                _this.resp_coords = resp.coords;
-                _this.latitude = _this.resp_coords.latitude;
-                _this.longitude = _this.resp_coords.longitude;
-                _this.loadMap();
-            }, function (error) {
-                console.log(error);
-            });
-        }).catch(function (error) {
-            console.log('Erro ao recuperar sua posição', error);
-        });
-    };
-    ChamadoPoliciaPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-chamado-policia',template:/*ion-inline-start:"/home/carloswosiak/Desktop/int/app/save-us/src/pages/chamado-policia/chamado-policia.html"*/'<!--\n  Generated template for the ChamadoPoliciaPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Detalhes da Ocorrência</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding id="padding">\n\n  <!-- <ion-list>\n    <ion-item *ngFor="let user of users">\n      <h2>{{user.name}}</h2>\n      <p>{{user.gender}}</p>\n    </ion-item>\n  </ion-list> -->\n\n  <!-- <p>Latitude: {{latitude}}</p>\n  <p>Longitude: {{longitude}}</p> -->\n  <h2>Local da Ocorrência</h2>\n\n    <div #map id="map"></div>\n\n\n\n  <form [formGroup]="chamado" (ngSubmit)="dadosChamado()">\n  <div class="form">\n    <ion-item  class="item">\n      <ion-label>Você é a vitima?</ion-label>\n      <ion-toggle color="danger" formControlName="vitima" ></ion-toggle>\n    </ion-item>\n\n\n  </div>\n    \n\n    <button ion-button round block color="secondary" type="submit" (click)="concluirChamado()" class="space">Solicitar serviço - Polícia</button>\n\n  </form>\n\n</ion-content>\n'/*ion-inline-end:"/home/carloswosiak/Desktop/int/app/save-us/src/pages/chamado-policia/chamado-policia.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_5__providers_user_user__["a" /* UserProvider */],
-            __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__["a" /* Geolocation */],
-            __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormBuilder */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* ToastController */]])
-    ], ChamadoPoliciaPage);
-    return ChamadoPoliciaPage;
-}());
-
-var Call = /** @class */ (function () {
-    function Call(date, time, local, user_id) {
-        this.date = date;
-        this.time = time;
-        this.local = local;
-        this.user_id = user_id;
-    }
-    return Call;
-}());
-
-//# sourceMappingURL=chamado-policia.js.map
-
-/***/ }),
-
-/***/ 107:
+/***/ 109:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChamadoSamuPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_google_maps__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_google_maps__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_user_user__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__attendance_attendance__ = __webpack_require__(45);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -335,6 +346,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
+
 
 
 
@@ -348,9 +361,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Ionic pages and navigation.
  */
 var ChamadoSamuPage = /** @class */ (function () {
-    function ChamadoSamuPage(navCtrl, navParams, geolocation, formBuilder, toastCtrl) {
+    function ChamadoSamuPage(navCtrl, navParams, userProvider, geolocation, formBuilder, toastCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
+        this.userProvider = userProvider;
         this.geolocation = geolocation;
         this.formBuilder = formBuilder;
         this.toastCtrl = toastCtrl;
@@ -364,13 +378,36 @@ var ChamadoSamuPage = /** @class */ (function () {
             duration: 4000,
             position: 'middle'
         });
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_6__attendance_attendance__["a" /* AttendancePage */]);
         toast.onDidDismiss(function () {
             console.log('Dismissed toast');
         });
         toast.present();
     };
     ChamadoSamuPage.prototype.dadosChamado = function () {
-        console.log(this.chamado.value);
+        var _this = this;
+        var data = new Date().toISOString();
+        var tempo = data.split('T');
+        var dia = tempo[0];
+        var hora = tempo[1];
+        var call = {
+            'call': {
+                'user': '1',
+                'date': dia,
+                'time': hora,
+                'status': 'Em andamento',
+                'latitude': this.latitude,
+                'longitude': this.longitude
+            }
+        };
+        this.userProvider.addCall(call).then(function (result) {
+            _this.toastCtrl
+                .create({ message: 'Chamado criado com sucesso!', duration: 5000 }).present();
+        }).catch(function (error) {
+            _this.toastCtrl
+                .create({ message: 'Falha ao criar chamada: ' + error.error, duration: 5000 }).present();
+            console.log(error);
+        });
     };
     ChamadoSamuPage.prototype.loadMap = function () {
         var mapOptions = {
@@ -423,6 +460,7 @@ var ChamadoSamuPage = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_5__providers_user_user__["a" /* UserProvider */],
             __WEBPACK_IMPORTED_MODULE_2__ionic_native_geolocation__["a" /* Geolocation */],
             __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormBuilder */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* ToastController */]])
@@ -434,14 +472,14 @@ var ChamadoSamuPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 108:
+/***/ 110:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EmailPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home__ = __webpack_require__(52);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -484,14 +522,14 @@ var EmailPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 109:
+/***/ 111:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IntroPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_login__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_login__ = __webpack_require__(46);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -535,18 +573,18 @@ var IntroPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 110:
+/***/ 112:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SignupPage; });
 /* unused harmony export User */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__email_email__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__login_login__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_user_user__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__email_email__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__login_login__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_user_user__ = __webpack_require__(44);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -637,7 +675,7 @@ var User = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 122:
+/***/ 124:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -650,40 +688,44 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 122;
+webpackEmptyAsyncContext.id = 124;
 
 /***/ }),
 
-/***/ 164:
+/***/ 166:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
+	"../pages/attendance/attendance.module": [
+		290,
+		7
+	],
 	"../pages/chamado-bombeiro/chamado-bombeiro.module": [
-		287,
+		291,
 		6
 	],
 	"../pages/chamado-policia/chamado-policia.module": [
-		288,
+		292,
 		5
 	],
 	"../pages/chamado-samu/chamado-samu.module": [
-		289,
+		293,
 		4
 	],
 	"../pages/email/email.module": [
-		290,
+		294,
 		3
 	],
 	"../pages/intro/intro.module": [
-		291,
+		295,
 		2
 	],
 	"../pages/login/login.module": [
-		292,
+		296,
 		1
 	],
 	"../pages/signup/signup.module": [
-		293,
+		297,
 		0
 	]
 };
@@ -698,18 +740,125 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = 164;
+webpackAsyncContext.id = 166;
 module.exports = webpackAsyncContext;
 
 /***/ }),
 
-/***/ 210:
+/***/ 167:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AttendanceProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+/*
+  Generated class for the AttendanceProvider provider.
+
+  See https://angular.io/guide/dependency-injection for more info on providers
+  and Angular DI.
+*/
+var AttendanceProvider = /** @class */ (function () {
+    function AttendanceProvider(http) {
+        this.http = http;
+        // URL externa, no caso do integrador será a url do nosso projeto no heroku!
+        this.apiUrl = 'https://save-us.herokuapp.com';
+        console.log('Hello AttendanceProvider Provider');
+    }
+    //Retorna os atendimentos do heroku!
+    AttendanceProvider.prototype.getAttendance = function () {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this.http.get(_this.apiUrl + '/calls.json').subscribe(function (data) {
+                resolve(data);
+            }, function (err) {
+                console.log(err);
+            });
+        });
+    };
+    AttendanceProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
+    ], AttendanceProvider);
+    return AttendanceProvider;
+}());
+
+//# sourceMappingURL=attendance.js.map
+
+/***/ }),
+
+/***/ 212:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConfigProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+/*
+  Generated class for the ConfigProvider provider.
+
+  See https://angular.io/guide/dependency-injection for more info on providers
+  and Angular DI.
+*/
+var config_key_name = "config";
+var ConfigProvider = /** @class */ (function () {
+    function ConfigProvider() {
+        this.config = {
+            showSlide: false
+        };
+    }
+    //Recupera dados do localstorage
+    ConfigProvider.prototype.getConfigData = function () {
+        return localStorage.getItem(config_key_name);
+    };
+    //Grava os dados do localstorage
+    ConfigProvider.prototype.setConfigData = function (showSlide) {
+        var config = {
+            showSlide: false
+        };
+        if (showSlide) {
+            config.showSlide = showSlide;
+        }
+        localStorage.setItem(config_key_name, JSON.stringify(config));
+    };
+    ConfigProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [])
+    ], ConfigProvider);
+    return ConfigProvider;
+}());
+
+//# sourceMappingURL=config.js.map
+
+/***/ }),
+
+/***/ 213:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(211);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(214);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(234);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -717,37 +866,43 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 231:
+/***/ 234:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(208);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(209);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_geolocation__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_google_maps__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera__ = __webpack_require__(167);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_http__ = __webpack_require__(285);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__angular_common_http__ = __webpack_require__(168);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_chamado_policia_chamado_policia__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_chamado_bombeiro_chamado_bombeiro__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_chamado_samu_chamado_samu__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_login_login__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_intro_intro__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_home_home__ = __webpack_require__(83);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_email_email__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_signup_signup__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__app_component__ = __webpack_require__(286);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__providers_user_user__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(210);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(211);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_geolocation__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_google_maps__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_http__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__angular_common_http__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_chamado_policia_chamado_policia__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_chamado_bombeiro_chamado_bombeiro__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_chamado_samu_chamado_samu__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_login_login__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_intro_intro__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_home_home__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_email_email__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_signup_signup__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_attendance_attendance__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__app_component__ = __webpack_require__(289);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__providers_user_user__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__providers_config_config__ = __webpack_require__(212);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__providers_attendance_attendance__ = __webpack_require__(167);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
 
 
 
@@ -774,7 +929,7 @@ var AppModule = /** @class */ (function () {
     AppModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_18__app_component__["a" /* MyApp */],
+                __WEBPACK_IMPORTED_MODULE_19__app_component__["a" /* MyApp */],
                 __WEBPACK_IMPORTED_MODULE_15__pages_home_home__["a" /* HomePage */],
                 __WEBPACK_IMPORTED_MODULE_10__pages_chamado_policia_chamado_policia__["a" /* ChamadoPoliciaPage */],
                 __WEBPACK_IMPORTED_MODULE_11__pages_chamado_bombeiro_chamado_bombeiro__["a" /* ChamadoBombeiroPage */],
@@ -782,14 +937,16 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_13__pages_login_login__["a" /* LoginPage */],
                 __WEBPACK_IMPORTED_MODULE_14__pages_intro_intro__["a" /* IntroPage */],
                 __WEBPACK_IMPORTED_MODULE_16__pages_email_email__["a" /* EmailPage */],
-                __WEBPACK_IMPORTED_MODULE_17__pages_signup_signup__["a" /* SignupPage */]
+                __WEBPACK_IMPORTED_MODULE_17__pages_signup_signup__["a" /* SignupPage */],
+                __WEBPACK_IMPORTED_MODULE_18__pages_attendance_attendance__["a" /* AttendancePage */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_8__angular_http__["a" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_9__angular_common_http__["b" /* HttpClientModule */],
-                __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_18__app_component__["a" /* MyApp */], {}, {
+                __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_19__app_component__["a" /* MyApp */], {}, {
                     links: [
+                        { loadChildren: '../pages/attendance/attendance.module#AttendancePageModule', name: 'AttendancePage', segment: 'attendance', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/chamado-bombeiro/chamado-bombeiro.module#ChamadoBombeiroPageModule', name: 'ChamadoBombeiroPage', segment: 'chamado-bombeiro', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/chamado-policia/chamado-policia.module#ChamadoPoliciaPageModule', name: 'ChamadoPoliciaPage', segment: 'chamado-policia', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/chamado-samu/chamado-samu.module#ChamadoSamuPageModule', name: 'ChamadoSamuPage', segment: 'chamado-samu', priority: 'low', defaultHistory: [] },
@@ -802,7 +959,7 @@ var AppModule = /** @class */ (function () {
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["a" /* IonicApp */]],
             entryComponents: [
-                __WEBPACK_IMPORTED_MODULE_18__app_component__["a" /* MyApp */],
+                __WEBPACK_IMPORTED_MODULE_19__app_component__["a" /* MyApp */],
                 __WEBPACK_IMPORTED_MODULE_15__pages_home_home__["a" /* HomePage */],
                 __WEBPACK_IMPORTED_MODULE_10__pages_chamado_policia_chamado_policia__["a" /* ChamadoPoliciaPage */],
                 __WEBPACK_IMPORTED_MODULE_11__pages_chamado_bombeiro_chamado_bombeiro__["a" /* ChamadoBombeiroPage */],
@@ -810,7 +967,8 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_13__pages_login_login__["a" /* LoginPage */],
                 __WEBPACK_IMPORTED_MODULE_14__pages_intro_intro__["a" /* IntroPage */],
                 __WEBPACK_IMPORTED_MODULE_16__pages_email_email__["a" /* EmailPage */],
-                __WEBPACK_IMPORTED_MODULE_17__pages_signup_signup__["a" /* SignupPage */]
+                __WEBPACK_IMPORTED_MODULE_17__pages_signup_signup__["a" /* SignupPage */],
+                __WEBPACK_IMPORTED_MODULE_18__pages_attendance_attendance__["a" /* AttendancePage */]
             ],
             providers: [
                 __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__["a" /* StatusBar */],
@@ -819,7 +977,9 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_6__ionic_native_google_maps__["a" /* GoogleMaps */],
                 __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera__["a" /* Camera */],
                 { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* IonicErrorHandler */] },
-                __WEBPACK_IMPORTED_MODULE_19__providers_user_user__["a" /* UserProvider */]
+                __WEBPACK_IMPORTED_MODULE_20__providers_user_user__["a" /* UserProvider */],
+                __WEBPACK_IMPORTED_MODULE_21__providers_config_config__["a" /* ConfigProvider */],
+                __WEBPACK_IMPORTED_MODULE_22__providers_attendance_attendance__["a" /* AttendanceProvider */]
             ]
         })
     ], AppModule);
@@ -830,16 +990,18 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 286:
+/***/ 289:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(209);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(208);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_intro_intro__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(211);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(210);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_intro_intro__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_config_config__ = __webpack_require__(212);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_login_login__ = __webpack_require__(46);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -854,20 +1016,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var MyApp = /** @class */ (function () {
-    function MyApp(platform, statusBar, splashScreen) {
-        this.rootPage = __WEBPACK_IMPORTED_MODULE_4__pages_intro_intro__["a" /* IntroPage */];
+    function MyApp(platform, statusBar, splashScreen, configProvider) {
+        var _this = this;
         platform.ready().then(function () {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
+            var config = configProvider.getConfigData();
+            if (config == null) {
+                _this.rootPage = __WEBPACK_IMPORTED_MODULE_4__pages_intro_intro__["a" /* IntroPage */];
+                configProvider.setConfigData(false);
+            }
+            else {
+                _this.rootPage = __WEBPACK_IMPORTED_MODULE_6__pages_login_login__["a" /* LoginPage */];
+            }
             statusBar.styleDefault();
             splashScreen.hide();
         });
     }
     MyApp = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/home/carloswosiak/Desktop/int/app/save-us/src/app/app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/home/carloswosiak/Desktop/int/app/save-us/src/app/app.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/home/carloswosiak/Desktop/int/app/save-us/src/app/app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/home/carloswosiak/Desktop/int/app/save-us/src/app/app.html"*/,
+            providers: [
+                __WEBPACK_IMPORTED_MODULE_5__providers_config_config__["a" /* ConfigProvider */]
+            ]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* Platform */],
+            __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */],
+            __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */],
+            __WEBPACK_IMPORTED_MODULE_5__providers_config_config__["a" /* ConfigProvider */]])
     ], MyApp);
     return MyApp;
 }());
@@ -876,12 +1054,12 @@ var MyApp = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 49:
+/***/ 44:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(168);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(84);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -932,7 +1110,6 @@ var UserProvider = /** @class */ (function () {
     UserProvider.prototype.addCall = function (data) {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            console.log(data);
             _this.http.post(_this.apiUrl + '/calls.json', data)
                 .subscribe(function (res) {
                 resolve(res);
@@ -952,16 +1129,124 @@ var UserProvider = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 54:
+/***/ 45:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AttendancePage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_attendance_attendance__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_home__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_google_maps__ = __webpack_require__(43);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var AttendancePage = /** @class */ (function () {
+    function AttendancePage(navCtrl, navParams, geolocation, attendanceProvider) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.geolocation = geolocation;
+        this.attendanceProvider = attendanceProvider;
+        this.getAttendance();
+    }
+    AttendancePage.prototype.ionViewDidLoad = function () {
+        var _this = this;
+        this.geolocation.getCurrentPosition()
+            .then(function (resp) {
+            _this.resp_coords = resp.coords;
+            console.log(_this.resp_coords);
+            _this.latitude = _this.resp_coords.latitude;
+            _this.longitude = _this.resp_coords.longitude;
+            _this.loadMap();
+            var watch = _this.geolocation.watchPosition();
+            watch.subscribe(function (resp) {
+                _this.resp_coords = resp.coords;
+                _this.latitude = _this.resp_coords.latitude;
+                _this.longitude = _this.resp_coords.longitude;
+                _this.loadMap();
+            }, function (error) {
+                console.log(error);
+            });
+        }).catch(function (error) {
+            console.log('Erro ao recuperar sua posição', error);
+        });
+    };
+    AttendancePage.prototype.getAttendance = function () {
+        var _this = this;
+        this.attendanceProvider.getAttendance()
+            .then(function (data) {
+            _this.attendance = data;
+            _this.chamada = _this.attendance[_this.attendance.length - 1];
+        });
+    };
+    AttendancePage.prototype.voltarMenu = function () {
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__home_home__["a" /* HomePage */]);
+    };
+    AttendancePage.prototype.loadMap = function () {
+        var mapOptions = {
+            camera: {
+                target: {
+                    lat: this.latitude,
+                    lng: this.longitude
+                },
+                zoom: 18,
+                tilt: 30
+            }
+        };
+        this.map = __WEBPACK_IMPORTED_MODULE_5__ionic_native_google_maps__["a" /* GoogleMaps */].create('map', mapOptions);
+        var marker = this.map.addMarkerSync({
+            title: 'Me',
+            icon: 'blue',
+            animation: 'DROP',
+            position: {
+                lat: this.latitude,
+                lng: this.longitude
+            }
+        });
+        this.latitude = mapOptions.camera.target.lat;
+        this.longitude = mapOptions.camera.target.lon;
+        marker.showInfoWindow();
+    };
+    AttendancePage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-attendance',template:/*ion-inline-start:"/home/carloswosiak/Desktop/int/app/save-us/src/pages/attendance/attendance.html"*/'<ion-header>\n\n  <ion-navbar>\n    <ion-title>Atendimento</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n    <h2>Local da Ocorrência</h2>\n\n    <div #map id="map"></div>\n\n  <ion-list inset>\n    <ion-item *ngIf="chamada">\n      <h1>Atendimento!</h1>      \n\n      <p>Status: {{chamada.status}}</p>\n      <p>Longitude: {{chamada.longitude}}</p>\n      <p>Latitude: {{chamada.latitude}}</p>\n      <p>Data: {{chamada.date}}</p>\n      <p>Hora: {{chamada.time}}</p>\n    </ion-item>\n  </ion-list>\n\n  <button ion-button round block (click)="voltarMenu()" class="space"> < Voltar </button>\n\n</ion-content>'/*ion-inline-end:"/home/carloswosiak/Desktop/int/app/save-us/src/pages/attendance/attendance.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__["a" /* Geolocation */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_attendance_attendance__["a" /* AttendanceProvider */]])
+    ], AttendancePage);
+    return AttendancePage;
+}());
+
+//# sourceMappingURL=attendance.js.map
+
+/***/ }),
+
+/***/ 46:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home__ = __webpack_require__(83);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__signup_signup__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__signup_signup__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(12);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1019,16 +1304,16 @@ var LoginPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 83:
+/***/ 52:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__chamado_policia_chamado_policia__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__chamado_bombeiro_chamado_bombeiro__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__chamado_samu_chamado_samu__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__chamado_policia_chamado_policia__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__chamado_bombeiro_chamado_bombeiro__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__chamado_samu_chamado_samu__ = __webpack_require__(109);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1072,5 +1357,5 @@ var HomePage = /** @class */ (function () {
 
 /***/ })
 
-},[210]);
+},[213]);
 //# sourceMappingURL=main.js.map
