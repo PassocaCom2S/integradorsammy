@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Pagina inicial
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="fundo">
+  <img src="../../assets/imgs/saveus.png" alt="saveus" class="img-save-us">
+
+    <button ion-button  color="dark" (click)="chamadoPolicia()" outline class="buttons">
+      <div class="imgs">
+        <img src="../../assets/imgs/policia.png" alt="policia" width="200">
+      </div>
+      <h2 class="h2">POLÍCIA</h2></button>
+
+
+    <button ion-button  color="dark" (click)="chamadoBombeiro()" outline class="buttons">
+      <div  class="imgs">
+        <img src="../../assets/imgs/bombeiro.png" alt="bombeiro" width="200">
+      </div>
+      <h2 class="h2">BOMBEIRO</h2></button>
+
+
+
+    <button ion-button  color="dark" (click)="chamadoSamu()" outline class="buttons">
+      <div  class="imgs">
+        <img src="../../assets/imgs/samu.png" alt="samu" width="200">
+      </div>
+        <h2 class="h2"> SAMU</h2> </button>
+
+</ion-content>

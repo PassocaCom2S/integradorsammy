@@ -1,0 +1,25 @@
+page-signup {
+
+  .fundo{
+    background:#ffffff;
+  }
+
+  .formularios{
+    border:2px solid black;
+    border-radius:8px;
+    text-align:center;
+    padding-bottom: 10%;
+    background-color: white;
+    color:black;
+  }
+
+  .formulario{
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  .button{
+    margin-top:10%;
+    box-shadow: 0px 0px 5px;
+  }
+}
