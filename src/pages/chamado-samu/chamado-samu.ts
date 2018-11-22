@@ -4,6 +4,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, CameraPosition, MarkerOptions, Marker, Environment } from '@ionic-native/google-maps';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ToastController } from 'ionic-angular';
+import { UserProvider } from '../../providers/user/user';
+import { AttendancePage } from '../attendance/attendance';
 
 /**
  * Generated class for the ChamadoSamuPage page.
@@ -27,6 +29,7 @@ export class ChamadoSamuPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public userProvider: UserProvider,
     private geolocation: Geolocation,
     private formBuilder: FormBuilder,
     private toastCtrl: ToastController) {
@@ -42,6 +45,7 @@ export class ChamadoSamuPage {
       position: 'middle'
     });
 
+    this.navCtrl.push(AttendancePage);
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });
@@ -50,7 +54,31 @@ export class ChamadoSamuPage {
   }
 
   dadosChamado() {
-    console.log(this.chamado.value);
+    const data = new Date().toISOString()
+    const tempo = data.split('T')
+    const dia = tempo[0];
+    const hora = tempo[1];
+
+
+    let call = {
+      'call': {
+        'user': '1',
+        'date': dia,
+        'time': hora,
+        'status': 'Em andamento',
+        'latitude': this.latitude,
+        'longitude': this.longitude
+      }
+    };
+    this.userProvider.addCall(call).then(
+      (result: any) => {
+        this.toastCtrl
+          .create({ message: 'Chamado criado com sucesso!', duration: 5000 }).present();
+      }).catch((error: any) => {
+        this.toastCtrl
+          .create({ message: 'Falha ao criar chamada: ' + error.error, duration: 5000 }).present();
+        console.log(error);
+      })
   }
 
   loadMap() {

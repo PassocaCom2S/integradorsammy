@@ -6,6 +6,7 @@ import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, CameraPositio
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { ToastController } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
+import { AttendancePage } from '../attendance/attendance';
 
 @IonicPage()
 
@@ -45,6 +46,7 @@ export class ChamadoPoliciaPage {
       position: 'middle'
     });
 
+    this.navCtrl.push(AttendancePage);
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });
