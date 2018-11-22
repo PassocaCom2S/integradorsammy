@@ -19,6 +19,7 @@ import { EmailPage } from '../pages/email/email';
 import { SignupPage } from '../pages/signup/signup';
 import { MyApp } from './app.component';
 import { UserProvider } from '../providers/user/user';
+import { ConfigProvider } from '../providers/config/config';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { UserProvider } from '../providers/user/user';
     GoogleMaps,
     Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    UserProvider
+    UserProvider,
+    ConfigProvider
   ]
 })
 export class AppModule {}
