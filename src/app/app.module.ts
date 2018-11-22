@@ -17,8 +17,11 @@ import { IntroPage } from '../pages/intro/intro';
 import { HomePage } from '../pages/home/home';
 import { EmailPage } from '../pages/email/email';
 import { SignupPage } from '../pages/signup/signup';
+import { AttendancePage } from '../pages/attendance/attendance';
 import { MyApp } from './app.component';
 import { UserProvider } from '../providers/user/user';
+import { ConfigProvider } from '../providers/config/config';
+import { AttendanceProvider } from '../providers/attendance/attendance';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,8 @@ import { UserProvider } from '../providers/user/user';
     LoginPage,
     IntroPage,
     EmailPage,
-    SignupPage 
+    SignupPage,
+    AttendancePage 
   ],
   imports: [
     BrowserModule,
@@ -48,7 +52,8 @@ import { UserProvider } from '../providers/user/user';
     LoginPage,
     IntroPage,
     EmailPage,
-    SignupPage 
+    SignupPage,
+    AttendancePage 
   ],
   providers: [
     StatusBar,
@@ -57,7 +62,9 @@ import { UserProvider } from '../providers/user/user';
     GoogleMaps,
     Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    UserProvider
+    UserProvider,
+    ConfigProvider,
+    AttendanceProvider
   ]
 })
 export class AppModule {}
